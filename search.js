@@ -1,12 +1,12 @@
-$('.search').on('keyup', function () {
+$(".search").on("keyup", function (event) {
   let searchValue = $(this).val().toLowerCase();
-  let searchResults = allShows.filter(show =>
+  let searchResults = allShows.filter((show) =>
     show.name.toLowerCase().includes(searchValue)
   );
 
-  $('#search-list').empty();
+  $("#search-list").empty();
+  $("#main-section").empty();
 
-  $('#main-section').empty();
   let rowDiv = $('<div class="row gy-2"></div>');
   let currentRow = rowDiv.clone();
 
@@ -24,16 +24,16 @@ $('.search').on('keyup', function () {
     );
     currentRow.append(showDiv);
     if ((i + 1) % 4 == 0 || i == searchResults.length - 1) {
-      $('#main-section').append(currentRow);
+      $("#main-section").append(currentRow);
       currentRow = rowDiv.clone();
     }
   }
 
   if (searchValue.length > 0) {
     for (let i = 0; i < searchResults.length && i < 10; i++) {
-      $('#search-list').show();
+      $("#search-list").show();
       let show = searchResults[i];
-      $('#search-list').append(
+      $("#search-list").append(
         `<li class="list-group-item"> \
           <a href="./info1.html?id=${show.id}" style="text-decoration: none; color: black;" > \
             ${show.name} \
@@ -42,41 +42,68 @@ $('.search').on('keyup', function () {
       );
     }
   } else {
-    $('#search-list').hide();
+    $("#search-list").hide();
+  }
+  if (searchResults.length === 1) {
+    $(document).on("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        let showId = searchResults[0].id;
+        window.location.href = `./info1.html?id=${showId}`;
+      }
+    });
+  } else {
+    $(document).off("keydown");
   }
 });
 
-$(document).on('click', function (event) {
-  if (!$(event.target).is('input')) {
-    $('li').hide();
-    $('.search').val('');
+// This is the updated click event handler
+$(document).on("click", function (event) {
+  if (!$(event.target).is("input")) {
+    $("li").hide();
+    $(".search").val("");
   }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-  let loaderContainer = document.querySelector('#loader-container');
-  let content = document.querySelector('#content');
+// This is the new keydown event handler
+$(".search").on("keydown", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    let searchValue = $(this).val().toLowerCase();
+    let searchResults = allShows.filter((show) =>
+      show.name.toLowerCase().includes(searchValue)
+    );
+    if (searchResults.length === 1) {
+      let showId = searchResults[0].id;
+      window.location.href = `./info1.html?id=${showId}`;
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  let loaderContainer = document.querySelector("#loader-container");
+  let content = document.querySelector("#content");
   let timeoutID;
 
   function showContent() {
     clearTimeout(timeoutID);
-    loaderContainer.parentElement.classList.remove('loading');
-    document.body.classList.add('loaded');
+    loaderContainer.parentElement.classList.remove("loading");
+    document.body.classList.add("loaded");
   }
 
   function removeLoader() {
-    loaderContainer.parentElement.classList.remove('loading');
-    document.body.classList.add('loaded');
+    loaderContainer.parentElement.classList.remove("loading");
+    document.body.classList.add("loaded");
   }
 
   timeoutID = setTimeout(removeLoader, 3000);
 
-  loaderContainer.parentElement.classList.add('loading');
-  document.addEventListener('click', showContent);
+  loaderContainer.parentElement.classList.add("loading");
+  document.addEventListener("click", showContent);
 
   function getRandomColor() {
-    let letters = '0123456789ABCDEF';
-    let color = '#';
+    let letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
@@ -86,8 +113,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function setGradient() {
     let color1 = getRandomColor();
     let color2 = getRandomColor();
-    let gradient = 'linear-gradient(135deg, ' + color1 + ', ' + color2 + ')';
-    if (gradient === 'linear-gradient(135deg, #000000, #000000)') {
+    let gradient = "linear-gradient(135deg, " + color1 + ", " + color2 + ")";
+    if (gradient === "linear-gradient(135deg, #000000, #000000)") {
       setGradient();
     } else {
       loaderContainer.style.backgroundImage = gradient;
@@ -97,8 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   setGradient();
 });
-let bottomButton = document.getElementById('myBtn1');
-let topButton = document.getElementById('myBtn2');
+let bottomButton = document.getElementById("myBtn1");
+let topButton = document.getElementById("myBtn2");
 
 // When the user scrolls, show the appropriate button depending on their scroll position
 window.onscroll = function () {
@@ -107,33 +134,33 @@ window.onscroll = function () {
 
 function scrollFunction() {
   if (document.body.scrollTop == 0 || document.documentElement.scrollTop == 0) {
-    topButton.style.display = 'none';
-    bottomButton.style.display = 'block';
+    topButton.style.display = "none";
+    bottomButton.style.display = "block";
   } else if (
     window.innerHeight + window.pageYOffset >=
     document.body.offsetHeight
   ) {
-    bottomButton.style.display = 'none';
-    topButton.style.display = 'block';
+    bottomButton.style.display = "none";
+    topButton.style.display = "block";
   } else {
-    topButton.style.display = 'block';
-    bottomButton.style.display = 'block';
+    topButton.style.display = "block";
+    bottomButton.style.display = "block";
   }
 }
 
 // When the user clicks on the bottom button, scroll to the bottom of the document
 function scrollToBottom() {
-  $('html, body').animate({ scrollTop: $(document).height() }, 1, function () {
-    bottomButton.style.display = 'none';
-    topButton.style.display = 'block';
+  $("html, body").animate({ scrollTop: $(document).height() }, 1, function () {
+    bottomButton.style.display = "none";
+    topButton.style.display = "block";
   });
 }
 
 // When the user clicks on the top button, scroll to the top of the document
 function scrollToTop() {
-  $('html, body').animate({ scrollTop: 0 }, 1, function () {
-    bottomButton.style.display = 'block';
-    topButton.style.display = 'none';
+  $("html, body").animate({ scrollTop: 0 }, 1, function () {
+    bottomButton.style.display = "block";
+    topButton.style.display = "none";
   });
 }
 
@@ -144,15 +171,15 @@ $(window).scroll(function () {
   let windowHeight = $(window).height();
 
   if (scrollTop > 0) {
-    topButton.style.display = 'block';
+    topButton.style.display = "block";
   } else {
-    topButton.style.display = 'none';
+    topButton.style.display = "none";
   }
 
   if (documentHeight - (scrollTop + windowHeight) < 1) {
-    bottomButton.style.display = 'none';
+    bottomButton.style.display = "none";
   } else {
-    bottomButton.style.display = 'block';
+    bottomButton.style.display = "block";
   }
 });
 
@@ -163,8 +190,8 @@ $(topButton).click(function () {
 
 // Attach click event handler to the bottom button
 $(bottomButton).click(function () {
-  $('html, body').animate({ scrollTop: $(document).height() }, 1, function () {
-    bottomButton.style.display = 'none';
-    topButton.style.display = 'block';
+  $("html, body").animate({ scrollTop: $(document).height() }, 1, function () {
+    bottomButton.style.display = "none";
+    topButton.style.display = "block";
   });
 });
