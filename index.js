@@ -30,7 +30,7 @@ let allShows = [];
 let showLimit = 50;
 let page = 0;
 let loadMoreBtn = $(
-  '<button class="btn btn-primary my-2" id="load-more">Load More <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></button>'
+  '<button class="btn btn-primary my-2" id="load-more">Click for loading more<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></button>'
 );
 
 function renderShows(limit) {
@@ -50,11 +50,11 @@ function renderShows(limit) {
     );
     currentRow.append(showDiv);
     if ((i + 1 - page) % 4 == 0 || i == allShows.length - 1) {
-      $('#main-section').append(currentRow);
+      $("#main-section").append(currentRow);
       currentRow = rowDiv.clone();
     }
   }
-  $('html, body').animate({ scrollTop: $(document).height() }, 10);
+  $("html, body").animate({ scrollTop: $(document).height() }, 10);
 }
 
 function loadMoreShows() {
@@ -65,15 +65,15 @@ function loadMoreShows() {
   }
 }
 
-loadMoreBtn.appendTo('#load-more-container');
+loadMoreBtn.appendTo("#load-more-container");
 loadMoreBtn.click(function () {
   loadMoreShows();
 });
 
 $.ajax({
-  url: 'https://api.tvmaze.com/shows',
-  method: 'GET',
-  dataType: 'json',
+  url: "https://api.tvmaze.com/shows",
+  method: "GET",
+  dataType: "json",
   success: function (data) {
     for (let i = 0; i < data.length; i++) {
       allShows.push(new Show(data[i]));
@@ -83,6 +83,6 @@ $.ajax({
       loadMoreBtn.hide();
     }
     // Show the bottom button when the page loads
-    bottomButton.style.display = 'block';
+    bottomButton.style.display = "block";
   },
 });
