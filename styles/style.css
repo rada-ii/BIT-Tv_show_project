@@ -202,11 +202,3 @@ body.loaded #loader-container {
 body.loaded #content {
   display: block;
 }
-
-.title {
-  margin-left: -17px;
-}
-
-.search-info {
-  margin-right: 70px;
-}
