@@ -1,84 +1,190 @@
-$(".search").on("keyup", function (event) {
-  let searchValue = $(this).val().toLowerCase();
-  let searchResults = allShows.filter((show) =>
-    show.name.toLowerCase().includes(searchValue)
-  );
+function searchList() {
+  let searchResults, selectedResult;
 
-  $("#search-list").empty();
-  $("#main-section").empty();
-
-  let rowDiv = $('<div class="row gy-2"></div>');
-  let currentRow = rowDiv.clone();
-
-  for (let i = 0; i < searchResults.length; i++) {
-    let currentShow = searchResults[i];
-    let showDiv = $(
-      `<div class="show col-sm-3"> \
-        <a href="./info1.html?id=${currentShow.id}" style="text-decoration: none;"> \
-          <img src="${currentShow.image.medium}" \
-          alt="${currentShow.name}"
-          style="width: 100%; border: 1px solid grey;"/> \
-          <p class="show-footer"style="border: 1px solid grey; padding: 5px; text-align: center;">${currentShow.name}</p> \
-        </a> \
-      </div>`
-    );
-    currentRow.append(showDiv);
-    if ((i + 1) % 4 == 0 || i == searchResults.length - 1) {
-      $("#main-section").append(currentRow);
-      currentRow = rowDiv.clone();
-    }
-  }
-
-  if (searchValue.length > 0) {
-    for (let i = 0; i < searchResults.length && i < 10; i++) {
-      $("#search-list").show();
-      let show = searchResults[i];
-      $("#search-list").append(
-        `<li class="list-group-item"> \
-          <a href="./info1.html?id=${show.id}" style="text-decoration: none; color: black;" > \
-            ${show.name} \
-          </a> \
-        </li>`
-      );
-    }
-  } else {
-    $("#search-list").hide();
-  }
-  if (searchResults.length === 1) {
-    $(document).on("keydown", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        let showId = searchResults[0].id;
-        window.location.href = `./info1.html?id=${showId}`;
-      }
-    });
-  } else {
-    $(document).off("keydown");
-  }
-});
-
-// This is the updated click event handler
-$(document).on("click", function (event) {
-  if (!$(event.target).is("input")) {
-    $("li").hide();
-    $(".search").val("");
-  }
-});
-
-// This is the new keydown event handler
-$(".search").on("keydown", function (event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
+  $(".search").on("input", function () {
     let searchValue = $(this).val().toLowerCase();
-    let searchResults = allShows.filter((show) =>
+    searchResults = allShows.filter((show) =>
       show.name.toLowerCase().includes(searchValue)
     );
-    if (searchResults.length === 1) {
-      let showId = searchResults[0].id;
-      window.location.href = `./info1.html?id=${showId}`;
+
+    $("#search-list").empty();
+
+    if (searchValue.length > 0) {
+      for (let i = 0; i < searchResults.length && i < 10; i++) {
+        $("#search-list").show();
+        let show = searchResults[i];
+        $("#search-list").append(
+          `<li class="list-group-item"> \
+            <a href="./info.html?id=${show.id}" style="text-decoration: none; color: black;" > \
+              ${show.name} \
+            </a> \
+          </li>`
+        );
+      }
+      selectedResult = $("#search-list li").first();
+      selectedResult.addClass("active");
+    } else {
+      $("#search-list").hide();
     }
-  }
-});
+  });
+  $(".search").on("keydown", function (event) {
+    let searchResults = $("#search-list li");
+    let selectedResult = searchResults.filter(".active");
+
+    if (event.keyCode === 40) {
+      // down arrow
+      event.preventDefault();
+      if (selectedResult) {
+        selectedResult.removeClass("active");
+        let nextResult = selectedResult.next();
+        if (nextResult.length) {
+          selectedResult = nextResult;
+        } else {
+          selectedResult = searchResults.first();
+        }
+      } else {
+        selectedResult = searchResults.first();
+      }
+      selectedResult.addClass("active");
+      $(this).val(selectedResult.text().trim());
+    } else if (event.keyCode === 38) {
+      // up arrow
+      event.preventDefault();
+      if (selectedResult) {
+        selectedResult.removeClass("active");
+        let prevResult = selectedResult.prev();
+        if (prevResult.length) {
+          selectedResult = prevResult;
+        } else {
+          selectedResult = searchResults.last();
+        }
+      } else {
+        selectedResult = searchResults.last();
+      }
+      selectedResult.addClass("active");
+      $(this).val(selectedResult.text().trim());
+    } else if (event.keyCode === 13) {
+      // enter
+      event.preventDefault();
+      if (selectedResult) {
+        window.location.href = selectedResult.find("a").attr("href");
+      }
+    }
+  });
+
+  $(document).on("click", function (event) {
+    if (!$(event.target).is("input")) {
+      $("li").hide();
+      $(".search").val("");
+    }
+  });
+}
+
+function searchIndex() {
+  let searchResults, selectedResult;
+  const rowDiv = $('<div class="row gy-2"></div>');
+
+  $(".search").on("input", function () {
+    let searchValue = $(this).val().toLowerCase();
+    searchResults = allShows.filter((show) =>
+      show.name.toLowerCase().includes(searchValue)
+    );
+
+    $("#search-list").empty();
+
+    $("#main-section").empty();
+    let currentRow = rowDiv.clone();
+
+    for (let i = 0; i < searchResults.length; i++) {
+      let currentShow = searchResults[i];
+      let showDiv = $(
+        `<div class="show col-sm-3"> \
+          <a href="./info.html?id=${currentShow.id}" style="text-decoration: none;"> \
+            <img src="${currentShow.image.medium}" \
+            alt="${currentShow.name}"
+            style="width: 100%; border: 1px solid grey;"/> \
+            <p class="show-footer"style="border: 1px solid grey; padding: 5px; text-align: center;">${currentShow.name}</p> \
+          </a> \
+        </div>`
+      );
+      currentRow.append(showDiv);
+      if ((i + 1) % 4 == 0 || i == searchResults.length - 1) {
+        $("#main-section").append(currentRow);
+        currentRow = rowDiv.clone();
+      }
+    }
+
+    if (searchValue.length > 0) {
+      for (let i = 0; i < searchResults.length && i < 10; i++) {
+        $("#search-list").show();
+        let show = searchResults[i];
+        $("#search-list").append(
+          `<li class="list-group-item"> \
+            <a href="./info.html?id=${show.id}" style="text-decoration: none; color: black;" > \
+              ${show.name} \
+            </a> \
+          </li>`
+        );
+      }
+      selectedResult = $("#search-list li").first();
+      selectedResult.addClass("active");
+    } else {
+      $("#search-list").hide();
+    }
+  });
+
+  $(".search").on("keydown", function (event) {
+    let searchResults = $("#search-list li");
+    let selectedResult = searchResults.filter(".active");
+
+    if (event.keyCode === 40) {
+      // down arrow
+      event.preventDefault();
+      if (selectedResult) {
+        selectedResult.removeClass("active");
+        let nextResult = selectedResult.next();
+        if (nextResult.length) {
+          selectedResult = nextResult;
+        } else {
+          selectedResult = searchResults.first();
+        }
+      } else {
+        selectedResult = searchResults.first();
+      }
+      selectedResult.addClass("active");
+      $(this).val(selectedResult.text().trim());
+    } else if (event.keyCode === 38) {
+      // up arrow
+      event.preventDefault();
+      if (selectedResult) {
+        selectedResult.removeClass("active");
+        let prevResult = selectedResult.prev();
+        if (prevResult.length) {
+          selectedResult = prevResult;
+        } else {
+          selectedResult = searchResults.last();
+        }
+      } else {
+        selectedResult = searchResults.last();
+      }
+      selectedResult.addClass("active");
+      $(this).val(selectedResult.text().trim());
+    } else if (event.keyCode === 13) {
+      // enter
+      event.preventDefault();
+      if (selectedResult) {
+        window.location.href = selectedResult.find("a").attr("href");
+      }
+    }
+  });
+
+  $(document).on("click", function (event) {
+    if (!$(event.target).is("input")) {
+      $("li").hide();
+      $(".search").val("");
+    }
+  });
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   let loaderContainer = document.querySelector("#loader-container");

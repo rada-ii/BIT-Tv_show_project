@@ -202,3 +202,14 @@ body.loaded #loader-container {
 body.loaded #content {
   display: block;
 }
+
+.navbar-brand {
+  margin-left: -15px;
+}
+
+.form {
+  margin-right: 50px;
+}
+#search-list li.active {
+  background-color: #87cbe0;
+}

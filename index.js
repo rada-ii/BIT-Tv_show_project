@@ -30,7 +30,7 @@ let allShows = [];
 let showLimit = 50;
 let page = 0;
 let loadMoreBtn = $(
-  '<button class="btn btn-primary my-2" id="load-more">Click for loading more<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></button>'
+  '<button class="btn btn-primary my-2" id="load-more">Load More <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></button>'
 );
 
 function renderShows(limit) {
@@ -40,7 +40,7 @@ function renderShows(limit) {
     let currentShow = allShows[i];
     let showDiv = $(
       `<div class="show col-sm-3"> \
-        <a href="./info1.html?id=${currentShow.id}" style="text-decoration: none;"> \
+        <a href="./info.html?id=${currentShow.id}" style="text-decoration: none;"> \
           <img src="${currentShow.image.medium}" \
           alt="${currentShow.name}"
           style="width: 100%; border: 1px solid grey;"/> \
@@ -70,6 +70,7 @@ loadMoreBtn.click(function () {
   loadMoreShows();
 });
 
+// searchIndex();
 $.ajax({
   url: "https://api.tvmaze.com/shows",
   method: "GET",
@@ -84,5 +85,6 @@ $.ajax({
     }
     // Show the bottom button when the page loads
     bottomButton.style.display = "block";
+    searchIndex();
   },
 });
