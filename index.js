@@ -70,7 +70,6 @@ loadMoreBtn.click(function () {
   loadMoreShows();
 });
 
-// searchIndex();
 $.ajax({
   url: "https://api.tvmaze.com/shows",
   method: "GET",
