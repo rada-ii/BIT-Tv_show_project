@@ -1,4 +1,4 @@
-This is web application for providing information to the users about TV shows from API endpoint !
+This is a web application for providing information to the users about TV shows from API endpoint !
 
 # checkout live:
 https://rada-ii.github.io/BIT-Tv_show_project/
