@@ -200,8 +200,6 @@ function searchIndex() {
     isResultFound = searchResults.length && searchValue;
 
     if (searchResults.length && searchValue.trim().length > 0) {
-      // show an alert and reload the page
-
       $("#search-list").hide();
       $("#main-section").empty();
       loadMoreBtn.hide();
@@ -354,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
       setGradient();
     } else {
       loaderContainer.style.backgroundImage = gradient;
-      setTimeout(setGradient, 1000); // Change gradient every 500ms
+      setTimeout(setGradient, 1000);
     }
   }
 
@@ -363,7 +361,6 @@ document.addEventListener("DOMContentLoaded", function () {
 let bottomButton = document.getElementById("myBtn1");
 let topButton = document.getElementById("myBtn2");
 
-// When the user scrolls, show the appropriate button depending on their scroll position
 window.onscroll = function () {
   scrollFunction();
 };
@@ -392,7 +389,6 @@ function scrollToBottom() {
   });
 }
 
-// When the user clicks on the top button, scroll to the top of the document
 function scrollToTop() {
   $("html, body").animate({ scrollTop: 0 }, 1, function () {
     bottomButton.style.display = "block";
@@ -400,7 +396,6 @@ function scrollToTop() {
   });
 }
 
-// When the user scrolls, show the appropriate button depending on their scroll position
 $(window).scroll(function () {
   let scrollTop = $(window).scrollTop();
   let documentHeight = $(document).height();
@@ -419,12 +414,10 @@ $(window).scroll(function () {
   }
 });
 
-// Attach click event handler to the top button
 $(topButton).click(function () {
   scrollToTop();
 });
 
-// Attach click event handler to the bottom button
 $(bottomButton).click(function () {
   $("html, body").animate({ scrollTop: $(document).height() }, 1, function () {
     bottomButton.style.display = "none";
