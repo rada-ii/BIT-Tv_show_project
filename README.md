@@ -1,6 +1,6 @@
 # 📺 BIT TV Show Project
 
-A web application for displaying popular TV shows using API data. Built with jQuery and Bootstrap for a responsive and interactive experience.
+This is web application for displaying popular TV shows using API data. Built with jQuery and Bootstrap for a responsive and interactive experience.
 
 ## 🚀 Live Demo
 
